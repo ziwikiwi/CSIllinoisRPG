@@ -70,6 +70,12 @@ public class TextLoop {
 				// Check if enemy is dead
 				if(enemy.getHealth() == 0) {
 					System.out.println(enemy.getName() + " has been destroyed!\n");
+					
+					// Increment level
+					if(player.levelIncrement()) {
+						System.out.println(player.getName() + " leveled up to " + player.getLevel() + "!\n");
+					}
+					
 					break;
 				}
 				
@@ -94,6 +100,9 @@ public class TextLoop {
 		System.out.print(chr.getName() + " | ");
 		System.out.print("HP: " + chr.getHealth() + "/" + chr.getMaxHealth() + " ");
 		System.out.print("DR: " + chr.getDamageResistance() + "\n");
+		System.out.print("LVL: " + chr.getLevel() + " | " + chr.getLevelCounter() + " to next | ");
+		System.out.print("ATT: " + chr.getATT() + " DEF: " + chr.getDEF());
+		System.out.print(" REC: " + chr.getREC() + " SPE:" + chr.getSPE() + "\n");
 	}
 	
 	/*
