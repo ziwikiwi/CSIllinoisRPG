@@ -21,8 +21,12 @@ package csrpg.fighters;
 import csrpg.moves.*;
 import csrpg.items.*;
 import java.math.*;
+import java.util.*;
 
 public abstract class Character {
+	
+	
+	// ESSENTIAL INFO AND STATISTICS **********************************************
 	
 	/*
 	 * The name of the character.
@@ -62,12 +66,62 @@ public abstract class Character {
 	
 	protected Item[] inventory = new Item[10];
 	
+	
+	// MODIFIER STATISTICS ********************************************************
+	
+	/*
+	 * The attack stat of the character. Influences how much damage it can do.
+	 */
+	
+	protected int ATT = 1;
+	
+	/*
+	 * The defense stat of the character. Influences how much resistance it
+	 * has to damage.
+	 */
+	
+	protected int DEF = 1;
+	
+	/*
+	 * The recovery stat of the character. Influences how much health it recovers
+	 * per turn.
+	 */
+	
+	protected int REC = 1;
+	
+	/*
+	 * The speed stat of the character. Influences the probability that an
+	 * attack misses.
+	 */
+	
+	protected int SPE = 1;
+	
+	// LEVELING ******************************************************************
+	
+	/*
+	 * The current level of the character.
+	 */
+	
+	protected int level = 1;
+	
+	/*
+	 * Progress towards next level for character.
+	 */
+	
+	protected int levelCounter = 0;
+	
+	// COMPLEX STAT MODIFIERS ****************************************************
+	
 	/*
 	 * Causes damage to the character. Health cannot go below zero.
 	 * Returns the damage dealt to the character.
 	 */
-	public int damage(int dam) {
-		int actualDam = Math.min(health, (int)((double)dam / damageResistance));
+	public int damage(int dam, int att) {
+		
+		// Dodge the attack maybe?
+		Random r = new Random();
+		if(r.nextInt(50 + SPE) < SPE && r.nextBoolean()) return 0;
+		int actualDam = Math.min(health, (int)((double)dam / (damageResistance + (((double) (DEF - att)) / 100.0))));
 		health -= actualDam;
 		return actualDam;
 	}
@@ -77,10 +131,31 @@ public abstract class Character {
 	 * Returns the amount character was healed.
 	 */
 	public int heal(int hea) {
-		int actualHea = Math.min(hea, maxHealth - health);
+		int actualHea = Math.min((int)(hea * (1.00 + (REC / 100.0))), maxHealth - health);
 		health += actualHea;
 		return actualHea;
 	}
+	
+	/*
+	 * Increments level counter. When it reaches the threshold, reset to 0
+	 * and increment modifier stats. Returns true if leveled.
+	 */
+	
+	public boolean levelIncrement() {
+		levelCounter++;
+		if(levelCounter >= level) {
+			levelCounter = 0;
+			level++;
+			ATT++;
+			DEF++;
+			REC++;
+			SPE++;
+			return true;
+		}
+		return false;
+	}
+	
+	// GETTERS AND SETTERS
 	
 	/*
 	 * Returns the name of the character.
@@ -129,6 +204,48 @@ public abstract class Character {
 	 */
 	public Item[] getInventory() {
 		return inventory;
+	}
+	
+	/*
+	 * Returns the attack of the character.
+	 */
+	public int getATT() {
+		return ATT;
+	}
+	
+	/*
+	 * Returns the defense of the character.
+	 */
+	public int getDEF() {
+		return DEF;
+	}
+	
+	/*
+	 * Returns the recovery of the character.
+	 */
+	public int getREC() {
+		return REC;
+	}
+	
+	/*
+	 * Returns the speed of the character.
+	 */
+	public int getSPE() {
+		return SPE;
+	}
+	
+	/*
+	 * Returns the level of the character.
+	 */
+	public int getLevel() {
+		return level;
+	}
+	
+	/*
+	 * Returns the level progress counter of the character.
+	 */
+	public int getLevelCounter() {
+		return levelCounter;
 	}
 	
 	/*
