@@ -30,7 +30,7 @@ public class HelloWorld extends Move {
 	
 	@Override
 	public int effect(Character target, Character source) {
-		return target.damage(10);
+		return target.damage(10, source.getATT());
 	}
 
 }

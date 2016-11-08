@@ -31,7 +31,7 @@ public class Cram extends Move {
 
 	@Override
 	public int effect(Character target, Character source) {
-		int drain = target.damage(5);
+		int drain = target.damage(5, source.getATT());
 		source.heal(drain);
 		return drain;
 	}
