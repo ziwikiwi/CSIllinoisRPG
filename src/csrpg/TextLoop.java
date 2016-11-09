@@ -33,10 +33,10 @@ public class TextLoop {
 		Random r = new Random();
 		
 		// List of enemies we have so far
-		Character[] enemies = {new Chara(), new CourseCatalog(),
-				new CS241VM(), new Eclipse(), new HackerRank(),
-				new Lab(), new MachineProblem(), new MallocMP(),
-				new Monad(), new Subversion()};
+		Character[] enemies = {new AllNighter(), new Chara(), new CodingChallenge(), new CourseCatalog(),
+				new CS241VM(), new Eclipse(), new ErhanKudeki(), new FinalProject242(), new GRE(), new HackerRank(),
+				new Lab(), new LennyPitt(), new MachineProblem(), new MallocMP(), new MastersApplication(), new Memes(),
+				new Monad(), new SeniorThesis(), new SteveHerzog(), new Subversion(), new TechnicalInterview(), new Waitlist()};
 		
 		// Initialize player
 		Player player = new Player();
