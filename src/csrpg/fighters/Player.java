@@ -36,5 +36,15 @@ public class Player extends Character {
 		moveset[1] = new Cram();
 		moveset[2] = new Procrastinate();
 		moveset[3] = new ProficiencyExam();
+		inventory[0] = new Ramen();
+		inventory[1] = new MilkTea();
+		inventory[2] = new FreePizza();
+		inventory[3] = new MealPlan();
+		inventory[4] = new NewLaptop();
+		inventory[5] = new HomeworkDrop();
+		inventory[6] = new HealthInsuranceWaiver();
+		inventory[7] = new Espresso();
+		inventory[8] = new CareerFairTShirt();
+		inventory[9] = new StartupHoodie();
 	}
 }
