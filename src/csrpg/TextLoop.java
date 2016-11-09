@@ -51,6 +51,9 @@ public class TextLoop {
 			Battle.startBattle(player, enemy, true);
 			System.out.println();
 			
+			// Save stats
+			player.saveStat();
+			
 			// Repeat till enemy is dead
 			while(true) {
 				
@@ -71,6 +74,9 @@ public class TextLoop {
 				if(enemy.getHealth() == 0) {
 					System.out.println(enemy.getName() + " has been destroyed!\n");
 					
+					// Restore stats
+					player.restoreStat();
+					
 					// Increment level
 					if(player.levelIncrement()) {
 						System.out.println(player.getName() + " leveled up to " + player.getLevel() + "!\n");
@@ -78,6 +84,9 @@ public class TextLoop {
 					
 					break;
 				}
+				
+				// Run status effects for enemy
+				enemy.statEffect();
 				
 				// Enemy move
 				Battle.enemyAction(true);
@@ -87,6 +96,9 @@ public class TextLoop {
 					System.out.println(player.getName() + " has been destroyed!\n");
 					break;
 				}
+				
+				// Run status effects for player
+				player.statEffect();
 			}
 		}
 		
