@@ -124,19 +124,19 @@ public class TextLoop {
 		int option_no = 1;
 		Move[] ms = chr.getMoveset();
 		Item[] inv = chr.getInventory();
-		System.out.println("[Moves]\n");
-		System.out.println("0: Do nothing\n");
+		System.out.println("[Moves]");
+		System.out.println("0: Do nothing");
 		for(int i = 0; i < ms.length; i++) {
 			if(ms[i] == null) break;
 			System.out.println(Integer.toString(option_no) + ":\t" + ms[i].getName());
-			System.out.println(ms[i].getDescription() + "\n");
+			System.out.println(ms[i].getDescription());
 			option_no++;
 		}
-		System.out.println("[Inventory]\n");
+		System.out.println("[Inventory]");
 		for(int i = 0; i < inv.length; i++) {
 			if(inv[i] == null) break;
 			System.out.println(Integer.toString(option_no) + ":\t" + inv[i].getName());
-			System.out.println(inv[i].getDescription() + "\n");
+			System.out.println(inv[i].getDescription());
 			option_no++;
 		}
 		
