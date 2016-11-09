@@ -110,6 +110,27 @@ public abstract class Character {
 	
 	protected int levelCounter = 0;
 	
+	// STATUS EFFECTS ************************************************************
+	
+	/*
+	 * Variables dictating the change in stats from turn to turn. 
+	 */
+	protected int deltaHealth = 0;
+	protected int deltaATT = 0;
+	protected int deltaDEF = 0;
+	protected int deltaREC = 0;
+	protected int deltaSPE = 0;
+	protected double deltaDMR = 0.0;
+	
+	/*
+	 * Variables containing the original values of stats.
+	 */
+	protected int origATT = ATT;
+	protected int origDEF = DEF;
+	protected int origREC = REC;
+	protected int origSPE = SPE;
+	protected double origDMR = damageResistance;
+	
 	// COMPLEX STAT MODIFIERS ****************************************************
 	
 	/*
@@ -134,6 +155,59 @@ public abstract class Character {
 		int actualHea = Math.min((int)(hea * (1.00 + (REC / 100.0))), maxHealth - health);
 		health += actualHea;
 		return actualHea;
+	}
+	
+	/*
+	 * Induces a status effect in the character.
+	 */
+	public void induceEffect(int dH, int dATT, int dDEF, int dREC, int dSPE, double dDMR) {
+		deltaHealth += dH;
+		deltaATT += dATT;
+		deltaDEF += dDEF;
+		deltaREC += dREC;
+		deltaSPE += dSPE;
+		deltaDMR += dDMR;
+	}
+	
+	/*
+	 * Runs status effect changes.
+	 */
+	public void statEffect() {
+		health-= Math.max(health - deltaHealth, 0);
+		ATT = Math.max(ATT - deltaATT, 0);
+		DEF = Math.max(DEF - deltaDEF, 0);
+		REC = Math.max(REC - deltaREC, 0);
+		SPE = Math.max(SPE - deltaSPE, 0);
+		damageResistance = Math.max(damageResistance - deltaDMR, 0.25);
+	}
+	
+	/*
+	 * Saves original stats.
+	 */
+	public void saveStat() {
+		origATT = ATT;
+		origDEF = DEF;
+		origREC = REC;
+		origSPE = SPE;
+		origDMR = damageResistance;
+	}
+	
+	/*
+	 * Restores original stats and clears all status effects.
+	 */
+	public void restoreStat() {
+		ATT = origATT;
+		DEF = origDEF;
+		REC = origREC;
+		SPE = origSPE;
+		damageResistance = origDMR;
+		
+		deltaHealth = 0;
+		deltaATT = 0;
+		deltaDEF = 0;
+		deltaREC = 0;
+		deltaSPE = 0;
+		deltaDMR = 0.0;
 	}
 	
 	/*
