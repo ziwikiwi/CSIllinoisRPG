@@ -142,9 +142,16 @@ public abstract class Character {
 		// Dodge the attack maybe?
 		Random r = new Random();
 		if(r.nextInt(50 + SPE) < SPE && r.nextBoolean()) return 0;
-		int actualDam = Math.min(health, (int)((double)dam / (damageResistance + (((double) (DEF - att)) / 100.0))));
+		double attemptedDam = (double)dam;
+		System.out.println(attemptedDam);
+		attemptedDam /= damageResistance;
+		System.out.println(attemptedDam);
+		attemptedDam /= 1.0 + (0.01 * (((double)DEF)/((double)att)));
+		System.out.println(attemptedDam);
+		double actualDam = Math.min(health, attemptedDam);
+		System.out.println(actualDam);
 		health -= actualDam;
-		return actualDam;
+		return (int)actualDam;
 	}
 	
 	/*
@@ -152,9 +159,11 @@ public abstract class Character {
 	 * Returns the amount character was healed.
 	 */
 	public int heal(int hea) {
-		int actualHea = Math.min((int)(hea * (1.00 + (REC / 100.0))), maxHealth - health);
+		double attemptedHeal = (double)hea;
+		attemptedHeal *= (1.0 + (((double)REC)*0.01));
+		double actualHea = Math.min(maxHealth - health, attemptedHeal);
 		health += actualHea;
-		return actualHea;
+		return (int)actualHea;
 	}
 	
 	/*
@@ -173,7 +182,7 @@ public abstract class Character {
 	 * Runs status effect changes.
 	 */
 	public void statEffect() {
-		health-= Math.max(health - deltaHealth, 0);
+		health = Math.max(health - deltaHealth, 0);
 		ATT = Math.max(ATT - deltaATT, 0);
 		DEF = Math.max(DEF - deltaDEF, 0);
 		REC = Math.max(REC - deltaREC, 0);
