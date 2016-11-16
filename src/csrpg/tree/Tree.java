@@ -26,7 +26,7 @@ public class Tree{
 	/*
 	 * Current location of the player
 	 */
-	private static Treenode location = null;
+	protected static Treenode location = null;
 	
 	/*
 	 * Sets up the structure of the tree.
@@ -65,18 +65,24 @@ public class Tree{
 	 * 1 = child1
 	 * 2 = child2
 	 */
-	public static Character traverse(int move) {
-		if(move == 0) {
+	public static boolean traverse(int move) {
+		if(move == 0 && location.parent != null) {
 			location = location.parent;
-		} else if(move == 1) {
+		} else if(move == 1 && location.child1 != null) {
 			location = location.child1;
-		} else if(move == 2) {
+		} else if(move == 2 && location.child2 != null) {
 			location = location.child2;
 		} else {
-			// Invalid move
-			return null;
+			return false;
 		}
 		location.traversed = true;
+		return true;
+	}
+	
+	/*
+	 * Returns the enemy on node.
+	 */
+	public static Character getEnemy() {
 		return location.enemy;
 	}
 	
@@ -100,13 +106,14 @@ public class Tree{
 	}
 	
 	/*
-	 * Cliams the coins on a node, but only if the enemy
+	 * Claims the coins on a node, but only if the enemy
 	 * has been destroyed. Returns false if enemy is not
 	 * destroyed.
 	 */
 	public static boolean claimCoins(Character player) {
 		if(location.enemy == null) {
-			
+			player.setCoins(player.getCoins() + location.coins);
+			location.coins = 0;
 			return true;
 		}
 		return false;
