@@ -81,6 +81,13 @@ public class TextLoop {
 						System.out.println(player.getName() + " leveled up to " + player.getLevel() + "!\n");
 					}
 					
+					// Nullify enemy
+					Tree.clearEnemy();
+					
+					// Claim rewards
+					Tree.claimReward(player);
+					Tree.claimCoins(player);
+					
 					break;
 				}
 				
@@ -99,10 +106,6 @@ public class TextLoop {
 				// Run status effects for player
 				player.statEffect();
 			}
-			
-			// Claim rewards
-			Tree.claimReward(player);
-			Tree.claimCoins(player);
 		}
 		
 	}
@@ -114,9 +117,15 @@ public class TextLoop {
 		System.out.println("Input node move choice(0 for up, 1 for left child, 2 for right child): ");
 		Scanner s = new Scanner(System.in);
 		int choice = s.nextInt();
-		while(!Tree.traverse(choice)) {
-			System.out.println("Invalid choice, try again: ");
+		boolean canMoveThatWay = Tree.traverse(choice);
+		while(!canMoveThatWay || Tree.getEnemy() == null) {
+			if(canMoveThatWay) {
+				System.out.println("No enemy here. Move again!: ");
+			} else {
+				System.out.println("Invalid choice, try again: ");
+			}
 			choice = s.nextInt();
+			canMoveThatWay = Tree.traverse(choice);
 		}
 		return Tree.getEnemy();
 	}
