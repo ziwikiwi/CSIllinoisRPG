@@ -31,7 +31,7 @@ public class Store {
 	/*
 	 * Prices of the items.
 	 */
-	private static int[] prices = {10, 20, 50, 100};
+	private static int[] prices = {5, 10, 20, 50};
 	
 	/*
 	 * Attempts to purchase an item. Returns true if successful,
