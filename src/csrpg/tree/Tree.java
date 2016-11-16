@@ -118,4 +118,11 @@ public class Tree{
 		}
 		return false;
 	}
+	
+	/*
+	 * Clears enemy from node.
+	 */
+	public static void clearEnemy() {
+		location.enemy = null;
+	}
 }
