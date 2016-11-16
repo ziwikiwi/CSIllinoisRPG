@@ -45,7 +45,7 @@ public class Store {
 		}
 		int space = -1;
 		Item[] inv = player.getInventory();
-		for(int i = 0; i < inventory.length; i++) {
+		for(int i = 0; i < inv.length; i++) {
 			if(inv[i] == null) {
 				space = i;
 				break;
@@ -60,6 +60,7 @@ public class Store {
 			return -3;
 		}
 		inv[space] = inventory[selection];
+		player.setCoins(player.getCoins() - prices[selection]);
 		return 0;
 	}
 	
