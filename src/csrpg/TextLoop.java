@@ -22,6 +22,8 @@ import csrpg.fighters.*;
 import csrpg.fighters.Character;
 import csrpg.items.*;
 import csrpg.moves.*;
+import csrpg.tree.Tree;
+
 import java.util.*;
 
 public class TextLoop {
@@ -32,11 +34,8 @@ public class TextLoop {
 		Scanner s = new Scanner(System.in);
 		Random r = new Random();
 		
-		// List of enemies we have so far
-		Character[] enemies = {new AllNighter(), new Chara(), new CodingChallenge(), new CourseCatalog(),
-				new CS241VM(), new Eclipse(), new ErhanKudeki(), new FinalProject242(), new GRE(), new HackerRank(),
-				new Lab(), new LennyPitt(), new MachineProblem(), new MallocMP(), new MastersApplication(), new Memes(),
-				new Monad(), new SeniorThesis(), new SteveHerzog(), new Subversion(), new TechnicalInterview(), new Waitlist()};
+		// Initialize tree
+		Tree.init();
 		
 		// Initialize player
 		Player player = new Player();
@@ -46,8 +45,8 @@ public class TextLoop {
 		// Repeat till player is dead
 		while(player.getHealth() > 0) {
 			
-			// Choose random enemy and start battle
-			Character enemy = enemies[r.nextInt(enemies.length)];
+			// Get player node move choice and start battle
+			Character enemy = getMoveChoice();
 			Battle.startBattle(player, enemy, true);
 			System.out.println();
 			
@@ -100,11 +99,29 @@ public class TextLoop {
 				// Run status effects for player
 				player.statEffect();
 			}
+			
+			// Claim rewards
+			Tree.claimReward(player);
+			Tree.claimCoins(player);
 		}
 		
 	}
 	
-	
+	/*
+	 * Gets player choice for node movement.
+	 */
+	private static Character getMoveChoice() {
+		System.out.println("Input node move choice(0 for up, 1 for left child, 2 for right child): ");
+		Scanner s = new Scanner(System.in);
+		int choice = s.nextInt();
+		while(!Tree.traverse(choice)) {
+			System.out.println("Invalid choice, try again: ");
+			choice = s.nextInt();
+		}
+		return Tree.getEnemy();
+	}
+
+
 	/*
 	 * Helper method to print the status of a character.
 	 */
