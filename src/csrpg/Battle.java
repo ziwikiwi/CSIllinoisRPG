@@ -37,6 +37,11 @@ public class Battle {
 	private static Character enemy = null;
 	
 	/*
+	 * Array counting how many times each move has been used.
+	 */
+	private static int[] moveUses = new int[4];
+	
+	/*
 	 * Starts the battle, with a new enemy if required.
 	 */
 	public static void startBattle(Player pla, Character ene, boolean printText) {
@@ -137,8 +142,31 @@ public class Battle {
 			
 		} else if(n >= 0) {
 			
+			// Select move while avoiding moves that have been used too much.
+			double[] probabilities = new double[4];
+			for(int i = 0; i < 4; i++) {
+				probabilities[i] = Math.pow(2, -moveUses[i]);
+			}
+			double[] prob_cutoffs = new double[4];
+			prob_cutoffs[0] = probabilities[0];
+			for(int i = 1; i < 4; i++) {
+				prob_cutoffs[i] = prob_cutoffs[i-1] + probabilities[i];
+				System.out.println(prob_cutoffs[i]);
+			}
+			double rand = prob_cutoffs[3] * r.nextDouble();
+			System.out.println(rand);
+			for(n = 0; n < 4; n++) {
+				if(n < 3 && ms[n+1] == null) {
+					break;
+				}
+				if(prob_cutoffs[n] >= rand) {
+					break;
+				}
+			}
+			
 			// Use move on player
 			ms[n].effect(player, enemy);
+			moveUses[n]++;
 			if(printText) {
 				System.out.println(enemy.getName() + " used " + ms[n].getName() + "!");
 				System.out.println("\t" + ms[n].getDescription());
@@ -146,5 +174,12 @@ public class Battle {
 			
 		}
 		
+	}
+	
+	/*
+	 * Resets moveUses, i.e. when a new enemy spawns.
+	 */
+	public static void resetMoves() {
+		moveUses = new int[4];
 	}
 }
