@@ -79,8 +79,8 @@ public class Battle {
 			if(printText) {
 				System.out.println(player.getName() + " used " + inv[n - numMoves].getName() + "!");
 			}
-			for(int i = n + 1; i < inv.length; i++) {
-				inv[i - 1] = inv[i];
+			for(int i = n - numMoves; i < inv.length - 1; i++) {
+				inv[i] = inv[i + 1];
 			}
 			inv[inv.length - 1] = null;
 			return true;
