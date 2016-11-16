@@ -22,6 +22,7 @@ import csrpg.fighters.*;
 import csrpg.fighters.Character;
 import csrpg.items.*;
 import csrpg.moves.*;
+import csrpg.store.Store;
 import csrpg.tree.Tree;
 
 import java.util.*;
@@ -88,6 +89,9 @@ public class TextLoop {
 					Tree.claimReward(player);
 					Tree.claimCoins(player);
 					
+					// Let player buy items from store
+					browseStore(player);
+					
 					break;
 				}
 				
@@ -129,7 +133,36 @@ public class TextLoop {
 		}
 		return Tree.getEnemy();
 	}
-
+	
+	/*
+	 * Allows player to purchase items from the store.
+	 */
+	private static void browseStore(Character player) {
+		Item[] items = Store.getInventory();
+		int[] price = Store.getPrices();
+		System.out.println("Your wallet: $" + player.getCoins());
+		for(int i = 0; i < items.length; i++) {
+			System.out.println(i + ": " + items[i].getName() + " - $" + price[i]);
+			System.out.println(items[i].getDescription());
+		}
+		System.out.println("Enter a number to purchase, or -1 to continue: ");
+		Scanner s = new Scanner(System.in);
+		int choice = s.nextInt();
+		while(choice != -1) {
+			int result = Store.purchase(choice, player);
+			if(result == 0) {
+				System.out.println("Bought 1 " + items[choice].getName() + " at $" + price[choice] + ". Wallet: $" + player.getCoins());
+			} else if(result == -1) {
+				System.out.println("Invalid selection.");
+			} else if(result == -2) {
+				System.out.println("Not enough space in inventory.");
+			} else if(result == -3) {
+				System.out.println("Not enough money.");
+			}
+			System.out.println("Enter a number: ");
+			choice = s.nextInt();
+		}
+	}
 
 	/*
 	 * Helper method to print the status of a character.
