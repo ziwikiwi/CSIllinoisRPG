@@ -62,4 +62,18 @@ public class Store {
 		inv[space] = inventory[selection];
 		return 0;
 	}
+	
+	/*
+	 * Returns store inventory.
+	 */
+	public static Item[] getInventory() {
+		return inventory;
+	}
+	
+	/*
+	 * Returns store prices
+	 */
+	public static int[] getPrices() {
+		return prices;
+	}
 }
