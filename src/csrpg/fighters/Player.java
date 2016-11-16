@@ -40,11 +40,5 @@ public class Player extends Character {
 		inventory[1] = new MilkTea();
 		inventory[2] = new FreePizza();
 		inventory[3] = new MealPlan();
-		inventory[4] = new NewLaptop();
-		inventory[5] = new HomeworkDrop();
-		inventory[6] = new HealthInsuranceWaiver();
-		inventory[7] = new Espresso();
-		inventory[8] = new CareerFairTShirt();
-		inventory[9] = new StartupHoodie();
 	}
 }
