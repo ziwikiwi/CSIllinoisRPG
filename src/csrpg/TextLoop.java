@@ -22,6 +22,9 @@ import csrpg.fighters.*;
 import csrpg.fighters.Character;
 import csrpg.items.*;
 import csrpg.moves.*;
+import csrpg.store.Store;
+import csrpg.tree.Tree;
+
 import java.util.*;
 
 public class TextLoop {
@@ -32,11 +35,8 @@ public class TextLoop {
 		Scanner s = new Scanner(System.in);
 		Random r = new Random();
 		
-		// List of enemies we have so far
-		Character[] enemies = {new AllNighter(), new Chara(), new CodingChallenge(), new CourseCatalog(),
-				new CS241VM(), new Eclipse(), new ErhanKudeki(), new FinalProject242(), new GRE(), new HackerRank(),
-				new Lab(), new LennyPitt(), new MachineProblem(), new MallocMP(), new MastersApplication(), new Memes(),
-				new Monad(), new SeniorThesis(), new SteveHerzog(), new Subversion(), new TechnicalInterview(), new Waitlist()};
+		// Initialize tree
+		Tree.init();
 		
 		// Initialize player
 		Player player = new Player();
@@ -46,8 +46,8 @@ public class TextLoop {
 		// Repeat till player is dead
 		while(player.getHealth() > 0) {
 			
-			// Choose random enemy and start battle
-			Character enemy = enemies[r.nextInt(enemies.length)];
+			// Get player node move choice and start battle
+			Character enemy = getMoveChoice();
 			Battle.startBattle(player, enemy, true);
 			System.out.println();
 			
@@ -82,6 +82,16 @@ public class TextLoop {
 						System.out.println(player.getName() + " leveled up to " + player.getLevel() + "!\n");
 					}
 					
+					// Nullify enemy
+					Tree.clearEnemy();
+					
+					// Claim rewards
+					Tree.claimReward(player);
+					Tree.claimCoins(player);
+					
+					// Let player buy items from store
+					browseStore(player);
+					
 					break;
 				}
 				
@@ -104,7 +114,56 @@ public class TextLoop {
 		
 	}
 	
+	/*
+	 * Gets player choice for node movement.
+	 */
+	private static Character getMoveChoice() {
+		System.out.println("Input node move choice(0 for up, 1 for left child, 2 for right child): ");
+		Scanner s = new Scanner(System.in);
+		int choice = s.nextInt();
+		boolean canMoveThatWay = Tree.traverse(choice);
+		while(!canMoveThatWay || Tree.getEnemy() == null) {
+			if(canMoveThatWay) {
+				System.out.println("No enemy here. Move again!: ");
+			} else {
+				System.out.println("Invalid choice, try again: ");
+			}
+			choice = s.nextInt();
+			canMoveThatWay = Tree.traverse(choice);
+		}
+		return Tree.getEnemy();
+	}
 	
+	/*
+	 * Allows player to purchase items from the store.
+	 */
+	private static void browseStore(Character player) {
+		Item[] items = Store.getInventory();
+		int[] price = Store.getPrices();
+		System.out.println("Your wallet: $" + player.getCoins());
+		for(int i = 0; i < items.length; i++) {
+			System.out.println(i + ": " + items[i].getName() + " - $" + price[i]);
+			System.out.println(items[i].getDescription());
+		}
+		System.out.println("Enter a number to purchase, or -1 to continue: ");
+		Scanner s = new Scanner(System.in);
+		int choice = s.nextInt();
+		while(choice != -1) {
+			int result = Store.purchase(choice, player);
+			if(result == 0) {
+				System.out.println("Bought 1 " + items[choice].getName() + " at $" + price[choice] + ". Wallet: $" + player.getCoins());
+			} else if(result == -1) {
+				System.out.println("Invalid selection.");
+			} else if(result == -2) {
+				System.out.println("Not enough space in inventory.");
+			} else if(result == -3) {
+				System.out.println("Not enough money.");
+			}
+			System.out.println("Enter a number: ");
+			choice = s.nextInt();
+		}
+	}
+
 	/*
 	 * Helper method to print the status of a character.
 	 */

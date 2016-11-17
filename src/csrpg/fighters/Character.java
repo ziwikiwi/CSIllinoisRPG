@@ -131,6 +131,13 @@ public abstract class Character {
 	protected int origSPE = SPE;
 	protected double origDMR = damageResistance;
 	
+	// COINS *********************************************************************
+	
+	/*
+	 * Coin purse of the character
+	 */
+	private int coins = 0;
+	
 	// COMPLEX STAT MODIFIERS ****************************************************
 	
 	/*
@@ -364,5 +371,19 @@ public abstract class Character {
 	 */
 	public void setDamageResistance(double dmr) {
 		damageResistance = dmr;
+	}
+
+	/*
+	 * Returns the coin purse of the character
+	 */
+	public int getCoins() {
+		return coins;
+	}
+
+	/*
+	 * Modifies the coin purse of the character
+	 */
+	public void setCoins(int coins) {
+		this.coins = coins;
 	}
 }
