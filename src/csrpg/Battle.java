@@ -48,6 +48,7 @@ public class Battle {
 		player = pla;
 		enemy = ene;
 		if(printText) {
+			System.out.println();
 			System.out.println(ene.getName() + " appeared!");
 			System.out.println(ene.getDescription());
 		}
@@ -76,12 +77,13 @@ public class Battle {
 			if(inv[i] == null) break;
 			else numItems++;
 		}
-		
+				
 		if(n >= numMoves && n < numMoves + numItems) {
 			
 			// Use item on self and remove from inventory
 			inv[n - numMoves].effect(player);
 			if(printText) {
+				System.out.println();
 				System.out.println(player.getName() + " used " + inv[n - numMoves].getName() + "!");
 			}
 			for(int i = n - numMoves; i < inv.length - 1; i++) {
@@ -95,6 +97,7 @@ public class Battle {
 			// Use move on enemy
 			ms[n].effect(enemy, player);
 			if(printText) {
+				System.out.println();
 				System.out.println(player.getName() + " used " + ms[n].getName() + "!");
 			}
 			return true;
@@ -135,6 +138,7 @@ public class Battle {
 			// Use item on self (enemy) and discard
 			inv[n - numMoves].effect(enemy);
 			if(printText) {
+				System.out.println();
 				System.out.println(enemy.getName() + " used " + inv[n - numMoves].getName() + "!");
 				System.out.println("\t" + inv[n - numMoves].getDescription());
 			}
@@ -151,10 +155,8 @@ public class Battle {
 			prob_cutoffs[0] = probabilities[0];
 			for(int i = 1; i < 4; i++) {
 				prob_cutoffs[i] = prob_cutoffs[i-1] + probabilities[i];
-				System.out.println(prob_cutoffs[i]);
 			}
 			double rand = prob_cutoffs[3] * r.nextDouble();
-			System.out.println(rand);
 			for(n = 0; n < 4; n++) {
 				if(n < 3 && ms[n+1] == null) {
 					break;
@@ -168,6 +170,7 @@ public class Battle {
 			ms[n].effect(player, enemy);
 			moveUses[n]++;
 			if(printText) {
+				System.out.println();
 				System.out.println(enemy.getName() + " used " + ms[n].getName() + "!");
 				System.out.println("\t" + ms[n].getDescription());
 			}

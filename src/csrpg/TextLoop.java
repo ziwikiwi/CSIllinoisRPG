@@ -69,7 +69,7 @@ public class TextLoop {
 					System.out.println("Invalid action.");
 					System.out.print("What would you like to do? (Input a number): ");
 				}
-				
+								
 				// Check if enemy is dead
 				if(enemy.getHealth() == 0) {
 					System.out.println(enemy.getName() + " has been destroyed!\n");
@@ -109,6 +109,9 @@ public class TextLoop {
 				
 				// Run status effects for player
 				player.statEffect();
+				
+				System.out.println("__________________________________________________________________________________________________________________________________________");
+				
 			}
 		}
 		
@@ -168,12 +171,13 @@ public class TextLoop {
 	 * Helper method to print the status of a character.
 	 */
 	private static void printStats(Character chr) {
-		System.out.print(chr.getName() + " | ");
-		System.out.print("HP: " + chr.getHealth() + "/" + chr.getMaxHealth() + " ");
-		System.out.print("DR: " + chr.getDamageResistance() + "\n");
-		System.out.print("LVL: " + chr.getLevel() + " | " + chr.getLevelCounter() + " to next | ");
-		System.out.print("ATT: " + chr.getATT() + " DEF: " + chr.getDEF());
-		System.out.print(" REC: " + chr.getREC() + " SPE:" + chr.getSPE() + "\n");
+		System.out.println();
+		System.out.println(chr.getName());
+		System.out.print("HP: " + chr.getHealth() + "/" + chr.getMaxHealth() + "\t| ");
+		double dispdmr = Math.floor(chr.getDamageResistance() * 100) / 100;
+		System.out.print("DR: " + dispdmr + "\t| ");
+		System.out.print("LVL: " + chr.getLevel() + "\t| " + chr.getLevelCounter() + " to next\t| ");
+		System.out.print("ATT: " + chr.getATT() + " DEF: " + chr.getDEF() + " REC: " + chr.getREC() + " SPE:" + chr.getSPE() + "\n");
 	}
 	
 	/*
@@ -184,17 +188,19 @@ public class TextLoop {
 		Move[] ms = chr.getMoveset();
 		Item[] inv = chr.getInventory();
 		System.out.println("[Moves]");
-		System.out.println("0: Do nothing");
+		System.out.println("0:\t" + "Do nothing");
 		for(int i = 0; i < ms.length; i++) {
 			if(ms[i] == null) break;
-			System.out.println(Integer.toString(option_no) + ":\t" + ms[i].getName());
+			System.out.print(Integer.toString(option_no) + ":\t" + ms[i].getName());
+			for(int j = 0; j < 24 - ms[i].getName().length(); j++) System.out.print(" ");
 			System.out.println(ms[i].getDescription());
 			option_no++;
 		}
 		System.out.println("[Inventory]");
 		for(int i = 0; i < inv.length; i++) {
 			if(inv[i] == null) break;
-			System.out.println(Integer.toString(option_no) + ":\t" + inv[i].getName());
+			System.out.print(Integer.toString(option_no) + ":\t" + inv[i].getName());
+			for(int j = 0; j < 24 - inv[i].getName().length(); j++) System.out.print(" ");
 			System.out.println(inv[i].getDescription());
 			option_no++;
 		}
