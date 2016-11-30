@@ -150,13 +150,9 @@ public abstract class Character {
 		Random r = new Random();
 		if(r.nextInt(50 + SPE) < SPE && r.nextBoolean()) return 0;
 		double attemptedDam = (double)dam;
-		System.out.println(attemptedDam);
 		attemptedDam /= damageResistance;
-		System.out.println(attemptedDam);
 		attemptedDam /= 1.0 + (0.01 * (((double)DEF)/((double)att)));
-		System.out.println(attemptedDam);
 		double actualDam = Math.min(health, attemptedDam);
-		System.out.println(actualDam);
 		health -= actualDam;
 		return (int)actualDam;
 	}
