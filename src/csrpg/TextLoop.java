@@ -40,6 +40,7 @@ public class TextLoop {
 		
 		// Initialize player
 		Player player = new Player();
+		player.setCoins(200);
 		System.out.println("You are: " + player.getName());
 		System.out.println(player.getDescription() + "\n");
 		
@@ -148,12 +149,19 @@ public class TextLoop {
 			System.out.println(i + ": " + items[i].getName() + " - $" + price[i]);
 			System.out.println(items[i].getDescription());
 		}
+		for(int i = 0; i < Store.getMoveInventory().length; i++) {
+			int numbering = i + items.length;
+			System.out.println(numbering + ": " + Store.getMoveInventory()[i].getName() + " - $" + Store.getMovePrice());
+			System.out.println(Store.getMoveInventory()[i].getDescription());
+		}
 		System.out.println("Enter a number to purchase, or -1 to continue: ");
 		Scanner s = new Scanner(System.in);
 		int choice = s.nextInt();
 		while(choice != -1) {
 			int result = Store.purchase(choice, player);
-			if(result == 0) {
+			if(result == 1) {
+				System.out.println("Bought move " + Store.getMoveInventory()[choice - Store.getInventory().length] + " at $" + Store.getMovePrice() + ". Wallet: $" + player.getCoins());
+			} else if(result == 0) {
 				System.out.println("Bought 1 " + items[choice].getName() + " at $" + price[choice] + ". Wallet: $" + player.getCoins());
 			} else if(result == -1) {
 				System.out.println("Invalid selection.");
